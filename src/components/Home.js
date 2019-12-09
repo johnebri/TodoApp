@@ -1,39 +1,44 @@
 import React, { Component } from 'react';
 import Todos from '../Todos';
 import AddTodo from '../AddTodo';
+import axios from 'axios';
 
 class Home extends Component {
 
     state = {
-        todos: [
-            {id: 1, content: 'buy some milk'},
-            {id: 2, content: 'play mario kart'}
-        ]
+        posts: [ ]
     }
 
-    deleteTodo = (id) => {
-        const todos = this.state.todos.filter(todo => {
-            return todo.id !== id
-        });
-        this.setState({
-            todos: todos
-        })
-    }
-
-    addTodo = (todo) => {
-        todo.id = Math.random();
-        let todos = [...this.state.todos, todo];
-        this.setState({
-            todos: todos
-        })
+    componentDidMount() {
+        axios.get('http://jsonplaceholder.typicode.com/posts')        
+            .then(res => {
+                console.log(res);
+                this.setState({
+                    posts: res.data.slice(0,10)
+                })
+            })
     }
 
     render () {
+        const { posts } = this.state;
+        const postList = posts.length ? (
+            posts.map(post => {
+                return (
+                    <div className="post card" key={post.id}>
+                        <div className="card-content">
+                            <span className="card-title">{post.title}</span>
+                            <p>{post.body}</p>
+                        </div>
+                    </div>
+                )
+            })
+        ) : (
+            <div className="center">No posts yet</div>
+        )
         return (
             <div className="container">
-                <h1 className="center blue-text">Todo's</h1>
-                <Todos todos={this.state.todos} deleteTodo={this.deleteTodo}/>
-                <AddTodo addTodo={this.addTodo} />
+                <h4 className="center">Home</h4>
+                {postList}
             </div>
         )
     }
