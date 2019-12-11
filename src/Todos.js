@@ -7,7 +7,7 @@ const Todos = ({todos, deleteTodo}) => {
             return (
                 <div className="collection-item" key={todo.id}>
                     <span onClick={()=> {deleteTodo(todo.id)}}>{todo.content}</span>
-                    <button className="right green" onClick={()=> {deleteTodo(todo.id)}} > Delete this todo </button>
+                    <button className="btn right green" onClick={()=> {deleteTodo(todo.id)}} > Delete this todo </button>
                 </div>
             )
         })
